@@ -1,17 +1,17 @@
 
-// What you plan to pass to the modules from main.tf
-
 # Define variables for the transform_etl module
 variable "project" {
   type        = string
   description = "Project name"
 }
 
-# Glue role name
-variable "glue_role_name" {
-  type        = string
-  description = "IAM role name for Glue job"
+
+# Glue role ARN (passed from infra module)
+variable "glue_role_arn" {
+  type = string
+  description = "ARN of the Glue role (passed from infra module)"
 }
+
 
 # Curated DB name
 variable "data_lake_bucket" {
