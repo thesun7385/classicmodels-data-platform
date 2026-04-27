@@ -18,8 +18,8 @@ resource "aws_glue_job" "csv_transformation_job" {
     "--curated_prefix"   = "curated/"
   }
 
+  # Set a timeout for the job (in minutes)
   timeout = 5
-
   number_of_workers = 2
   worker_type       = "G.1X"
 

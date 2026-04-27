@@ -3,7 +3,8 @@
 module "infra" {
     source = "./modules/infra"
     // Get variables from root module
-    glue_role_name = var.glue_role_name 
+    glue_role_name = var.glue_role_name
+    data_lake_bucket= var.data_lake_bucket
 }
 
 
@@ -21,5 +22,8 @@ module "transform_etl" {
 
 }
 
+# Exptect output
+# glue_csv_transform_job = "clmodels-csv-transformation-job"
+# glue_role_arn = "arn:aws:iam::637423445089:role/clmodels-glue-role"
 
 // Todo: Module: Presentation layer - Athena, QuickSight, etc.
