@@ -5,7 +5,8 @@ import pandas as pd
 # Import create_engine from SQLAlchemy to connect to the database
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
-
+import csv
+# Import boto for AWS services
 import boto3
 
 # Load environment variables from .env file
@@ -55,7 +56,11 @@ def extract_table_to_csv(table_name):
         file_path = os.path.join(OUTPUT_DIR, f"{table_name}.csv")
         
         # Save the DataFrame to a CSV file without the index
-        df.to_csv(file_path, index=False)
+        df.to_csv(
+            file_path,
+            index=False,
+            sep=',',
+        )
         
         print(f"Data from table '{table_name}' has been successfully saved to '{file_path}'")
     except Exception as e:
@@ -68,10 +73,17 @@ def upload_to_s3(file_path, bucket_name, object_name):
     
     try:
         # Upload the file to S3
-        s3_client.upload_file(file_path, bucket_name, object_name)
+        s3_client.upload_file(
+        file_path,
+        bucket_name,
+        object_name,
+        ExtraArgs={"ContentType": "text/csv"} # Specify csv
+        )
         print(f"File '{file_path}' has been successfully uploaded to S3 bucket '{bucket_name}' as '{object_name}'")
     except Exception as e:
         print(f"An error occurred while uploading file '{file_path}' to S3: {e}")
+        
+        
 
 # Main
 def main():

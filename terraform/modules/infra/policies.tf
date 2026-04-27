@@ -1,38 +1,57 @@
-# Glue base policy for the Glue job to assume the role
-# Allow glue to assume the role and access necessary resources
-data "aws_iam_policy_document" "glue_base_policy" {
+
+# Blue Print for glue policies
+data "aws_iam_policy_document" "glue_access_policy_doc" {
+
   statement {
-    sid    = "AllowGlueToAssumeRole"
+    sid    = "S3Access"
     effect = "Allow"
 
-    principals {
-      identifiers = ["glue.amazonaws.com"]
-      type        = "Service"
-    }
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:ListBucket"
+    ]
 
-    actions = ["sts:AssumeRole"]
+    resources = [
+      "arn:aws:s3:::${var.data_lake_bucket}",
+      "arn:aws:s3:::${var.data_lake_bucket}/*"
+    ]
+  }
+
+  statement {
+    sid    = "CloudWatchLogs"
+    effect = "Allow"
+
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
+
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "GlueCatalogAccess"
+    effect = "Allow"
+
+    actions = [
+      "glue:GetDatabase",
+      "glue:GetTable",
+      "glue:CreateTable",
+      "glue:UpdateTable"
+    ]
+
+    resources = ["*"]
   }
 }
- 
-# Glue access policy for the Glue job to access necessary resources
-# Allow glue to access S3, Glue, IAM, CloudWatch, SQS, EC2, RDS, and CloudTrail resources
-data "aws_iam_policy_document" "glue_access_policy" {
-  statement {
-    sid    = "AllowGlueAccess"
-    effect = "Allow"
-    actions = [
-      "s3:*",
-      "glue:*",
-      "iam:*",
-      "logs:*",
-      "cloudwatch:*",
-      "sqs:*",
-      "ec2:*",
-      "rds:*",
-      "cloudtrail:*"
-    ]
-    resources = [
-      "*",
-    ]
-  }
-} 
+
+resource "aws_iam_policy" "glue_access_policy" {
+  name   = "glue-access-policy"
+  policy = data.aws_iam_policy_document.glue_access_policy_doc.json
+}
+
+resource "aws_iam_role_policy_attachment" "glue_attach" {
+  role       = aws_iam_role.glue_job_role.name
+  policy_arn = aws_iam_policy.glue_access_policy.arn
+}

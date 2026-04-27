@@ -13,7 +13,7 @@ variable "glue_role_arn" {
 }
 
 
-# Curated DB name
+# Bucket Name for the data lake
 variable "data_lake_bucket" {
   type        = string
   description = "Data lake bucket name"
