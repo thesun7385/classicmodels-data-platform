@@ -16,7 +16,7 @@ from awsglue.context import GlueContext
 from awsglue.transforms import * 
 from awsglue.utils import getResolvedOptions 
 from awsglue.job import Job 
-from awsglue.dynamicframe import DynamicFrame 
+from awsglue.dynamicframe import DynamicFrame
 
 # Read input parameters for the job
 args = getResolvedOptions(sys.argv, ['JOB_NAME', 'data_lake_bucket'])
