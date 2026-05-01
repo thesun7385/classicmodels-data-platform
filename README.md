@@ -1,4 +1,4 @@
-# 📊 ClassicModels Data Platform (AWS Medallion Architecture)
+# ClassicModels Data Platform (AWS Medallion Architecture)
 
 A cloud-based data engineering project built using **Terraform, AWS S3, AWS Glue, and Athena**, implementing a **medallion architecture (Landing → Curated → Presentation)** on the ClassicModels dataset.
 
@@ -13,6 +13,8 @@ The pipeline is fully automated using **infrastructure as code (Terraform)** and
 ---
 
 ## 🏗️ Architecture
+
+<img src="docs/ClassicModels-architecture.jpg" alt="architecture" width="800"/>
 
 ### 🔹 Landing Layer
 - Raw CSV data extracted from the ClassicModels database
@@ -39,7 +41,6 @@ The pipeline is fully automated using **infrastructure as code (Terraform)** and
 - **ETL Processing:** AWS Glue (PySpark)
 - **Query Engine:** Amazon Athena
 - **Language:** Python (data extraction scripts)
-
 ---
 
 ## 📁 Project Structure
@@ -48,22 +49,19 @@ The pipeline is fully automated using **infrastructure as code (Terraform)** and
 classicmodels-data-platform/
 │
 ├── terraform/
-│   ├── environments/
-│   │   └── dev/
 │   ├── modules/
-│   │   ├── infra/
-│   │   ├── glue_jobs/
+│       ├── infra/
+│       ├── load_etl/
+│       └── transform_etl/
 │
 ├── data/
-│   └── seed/                  # Extracted CSV files
-│
-├── glue_jobs/
-│   ├── landing_to_curated/   # ETL scripts
-│   ├── curated_to_presentation/
+│   └── seed/                  
 │
 ├── scripts/
-│   ├── extract_to_csv.py
-│   ├── upload_to_s3.py
+│   ├── batch_load.py
+│   ├── batch_extract.py
+│   ├── batch_transform.py
+│  
 │
 ├── sql/
 │   ├── athena_queries/
