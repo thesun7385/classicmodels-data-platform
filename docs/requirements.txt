@@ -1,0 +1,10 @@
+----------------------
+  Business Use Cases 
+----------------------
+
+
+1.Sales performance by country
+2.Monthly revenue trends
+3.Customer lifetime value
+4.Product performance ranking
+5.Order fulfillment analysis
